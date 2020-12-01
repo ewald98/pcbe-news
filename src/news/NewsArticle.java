@@ -1,7 +1,9 @@
+package news;
+
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
-public class News {
+public class NewsArticle {
 
     private String title;
     private String author;
@@ -16,7 +18,7 @@ public class News {
 //    private LocalDateTime lastModifiedDateTime;
     // TODO: add more fields?
 
-    public News(String title, String author, String section) {
+    public NewsArticle(String title, String author, String section) {
         this.title = title;
         this.author = author;
         this.section = section;

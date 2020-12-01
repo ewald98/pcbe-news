@@ -2,15 +2,14 @@ package events;
 
 public class Event {
 
-    // For the moment, we're doing only these three types.
+    // maybe move this to NewsEvent to make events more standalone?
     public enum Type {
-        PUBLISHED,
-        UPDATED,
-        DELETED
+        PUBLISHED,  // new news article is published
+        UPDATED,    // news article is modified or deleted.
+        READ
     }
 
     private Type type;
-    boolean handled;
 
     protected Event(Type type) {
         this.type = type;
