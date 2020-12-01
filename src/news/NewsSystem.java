@@ -20,7 +20,7 @@ public class NewsSystem implements EventHandler {
     }
 
     public NewsSystem() {
-        dispatcher.registerListener(Event.Type.READ, this);
+        dispatcher.registerListener(NewsEvent.NewsType.READ, this);
     }
 
     public Set<NewsArticle> getAllNews() {
@@ -29,7 +29,7 @@ public class NewsSystem implements EventHandler {
 
     public void subscribe(Reader reader, NewsArticle newsArticle) {
         // TODO: add filter to subscribe just to that specific newsArticle
-        dispatcher.registerListener(Event.Type.UPDATED, reader);
+        dispatcher.registerListener(NewsEvent.NewsType.UPDATED, reader);
     }
 
     public int getNoViews(NewsArticle newsArticle) {

@@ -22,14 +22,14 @@ public class Reader implements EventHandler {
 
     @Override
     public void handleEvent(Event event) {
-        if (event.getType() == Event.Type.PUBLISHED) {
+        if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
 
-        } else if (event.getType() == Event.Type.UPDATED) {
+        } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
 
         }
     }
 
     public void readNewsArticle(NewsArticle newsArticle) {
-        newsSystem.getDispatcher().dispatch(new NewsEvent(Event.Type.READ, newsArticle));
+        newsSystem.getDispatcher().dispatch(new NewsEvent(NewsEvent.NewsType.READ, newsArticle));
     }
 }

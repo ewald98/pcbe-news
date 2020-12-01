@@ -1,13 +1,8 @@
 package events;
 
-public class Event {
+abstract public class Event {
 
-    // maybe move this to NewsEvent to make events more standalone?
-    public enum Type {
-        PUBLISHED,  // new news article is published
-        UPDATED,    // news article is modified or deleted.
-        READ
-    }
+    public interface Type {}
 
     private Type type;
 
