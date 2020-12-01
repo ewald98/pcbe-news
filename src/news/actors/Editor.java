@@ -23,4 +23,9 @@ public class Editor {
         newsSystem.addNewsArticle(newsArticle);
     }
 
+    // TODO: updateNewsArticle
+    // TODO 2: should update some of the overall logic: if a reader is subscribed to a certain section and an article in that section is modified (but reader is not directly subscribed to that article), should he be notified?
+    public void updateNewsArticle(NewsArticle newsArticle) {
+    }
+
 }
