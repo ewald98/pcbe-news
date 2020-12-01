@@ -2,7 +2,7 @@ package events;
 
 public class EventFilter {
 
-    boolean filterEvent(Event event) {
+    public boolean filterEvent(Event event) {
         return true;
     }
 

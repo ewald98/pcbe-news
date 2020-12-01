@@ -32,4 +32,5 @@ public class Reader implements EventHandler {
     public void readNewsArticle(NewsArticle newsArticle) {
         newsSystem.getDispatcher().dispatch(new NewsEvent(NewsEvent.NewsType.READ, newsArticle));
     }
+
 }
