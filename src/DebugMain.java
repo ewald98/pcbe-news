@@ -3,7 +3,7 @@ import news.NewsArticle;
 import news.NewsSystem;
 import news.actors.Reader;
 
-public class Main {
+public class DebugMain {
 
     public static void main(String[] args) {
 
@@ -15,9 +15,9 @@ public class Main {
                 "Politica"
         );
         NewsArticle newsArticle2 = new NewsArticle(
-                        "Stadionul Dan Paltinisanu se inchide",
-                        "Paul Popescu",
-                        "Sport"
+                "Stadionul Dan Paltinisanu se inchide",
+                "Paul Popescu",
+                "Sport"
         );
         NewsArticle newsArticle3 = new NewsArticle(
                 "Stadionul Dan Paltinisanu se deschide",
@@ -25,22 +25,25 @@ public class Main {
                 "Sport"
         );
 
-        newsSystem.addNewsArticleManually(newsArticle1);
-        newsSystem.addNewsArticleManually(newsArticle2);
+
+        Editor editor = new Editor(newsSystem);
 
         Reader reader1 = new Reader(newsSystem);
         Reader reader2 = new Reader(newsSystem);
+        reader2.subscribe("Sport");
 
-        Editor editor1 = new Editor(newsSystem);
-        Editor editor2 = new Editor(newsSystem);
+        editor.addNewsArticle(newsArticle1);
+        editor.addNewsArticle(newsArticle2);
+        editor.addNewsArticle(newsArticle3);
 
-        reader1.readNewsArticle(newsArticle1);
-        reader1.readNewsArticle(newsArticle1);
-        reader1.readNewsArticle(newsArticle2);
-        reader1.readNewsArticle(newsArticle1);
-        reader1.readNewsArticle(newsArticle2);
-        reader2.readNewsArticle(newsArticle1);
-        reader2.readNewsArticle(newsArticle1);
+
+//        reader1.readNewsArticle(newsArticle1);
+//        reader1.readNewsArticle(newsArticle1);
+//        reader1.readNewsArticle(newsArticle2);
+//        reader1.readNewsArticle(newsArticle1);
+//        reader1.readNewsArticle(newsArticle2);
+//        reader2.readNewsArticle(newsArticle1);
+//        reader2.readNewsArticle(newsArticle1);
 
     }
 

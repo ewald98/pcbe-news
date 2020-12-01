@@ -1,6 +1,7 @@
-package news;
+package news.events;
 
 import events.Event;
+import news.NewsArticle;
 
 public class NewsEvent extends Event {
 
@@ -13,7 +14,7 @@ public class NewsEvent extends Event {
 
     private NewsArticle newsArticle;
 
-    protected NewsEvent(Type type, NewsArticle newsArticle) {
+    public NewsEvent(Type type, NewsArticle newsArticle) {
         super(type);
         this.newsArticle = newsArticle;
     }

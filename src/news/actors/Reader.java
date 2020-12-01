@@ -1,8 +1,10 @@
-package news;
+package news.actors;
 
 import events.Event;
 import events.EventHandler;
 import news.NewsArticle;
+import news.NewsSystem;
+import news.events.NewsEvent;
 
 public class Reader implements EventHandler {
 
@@ -12,20 +14,21 @@ public class Reader implements EventHandler {
         this.newsSystem = newsSystem;
     }
 
+    // TODO: Implement
     private void subscribe(NewsArticle newsArticle) {
         newsSystem.subscribe(this, newsArticle);
     }
 
-    private void subscribe(String author) {
-        // TODO: implement filters
+    public void subscribe(String section) {
+        newsSystem.subscribe(this, section);
     }
 
     @Override
     public void handleEvent(Event event) {
         if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
-
+            System.out.println("Reader got notified of event:" + ((NewsEvent)event).getNewsArticle().getTitle());
         } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
-
+            System.out.println("Updated news article");
         }
     }
 

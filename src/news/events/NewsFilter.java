@@ -1,7 +1,9 @@
-package news;
+package news.events;
 
 import events.Event;
 import events.EventFilter;
+import news.NewsArticle;
+import news.events.NewsEvent;
 
 public class NewsFilter extends EventFilter {
 

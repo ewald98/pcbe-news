@@ -2,11 +2,12 @@ package news;
 
 import events.Event;
 import events.EventDispatcher;
+import events.EventFilter;
 import events.EventHandler;
-import news.NewsArticle;
-import news.Reader;
+import news.actors.Reader;
+import news.events.NewsEvent;
+import news.events.NewsFilter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -27,9 +28,13 @@ public class NewsSystem implements EventHandler {
         return news.keySet();
     }
 
+    // TODO: Implement
     public void subscribe(Reader reader, NewsArticle newsArticle) {
-        // TODO: add filter to subscribe just to that specific newsArticle
         dispatcher.registerListener(NewsEvent.NewsType.UPDATED, reader);
+    }
+
+    public void subscribe(Reader reader, String section) {
+        dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(section));
     }
 
     public int getNoViews(NewsArticle newsArticle) {
@@ -45,6 +50,10 @@ public class NewsSystem implements EventHandler {
         news.put(readArticle, count + 1);
     }
 
+    public void addNewsArticle(NewsArticle newsArticle) {
+        news.put(newsArticle, 0);
+        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.PUBLISHED, newsArticle));
+    }
 
 
     // used to populate news hashmap (for debugging mostly)
