@@ -1,9 +1,8 @@
 package events;
 
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import utils.Pair;
 
 public class EventDispatcher {
 
