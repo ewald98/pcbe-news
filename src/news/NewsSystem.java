@@ -2,7 +2,6 @@ package news;
 
 import events.Event;
 import events.EventDispatcher;
-import events.EventFilter;
 import events.EventHandler;
 import news.actors.Reader;
 import news.events.NewsEvent;
@@ -30,7 +29,7 @@ public class NewsSystem implements EventHandler {
 
     // TODO: Implement
     public void subscribe(Reader reader, NewsArticle newsArticle) {
-        dispatcher.registerListener(NewsEvent.NewsType.UPDATED, reader);
+        dispatcher.registerListener(NewsEvent.NewsType.UPDATED, reader, new NewsFilter(newsArticle));
     }
 
     public void subscribe(Reader reader, String section) {
@@ -43,7 +42,7 @@ public class NewsSystem implements EventHandler {
 
     @Override
     public void handleEvent(Event event) {
-        // eventType will be: NEWSREAD
+        // eventType will be: READ
         NewsArticle readArticle = ((NewsEvent) event).getNewsArticle();
 
         int count = news.get(readArticle);
@@ -52,13 +51,18 @@ public class NewsSystem implements EventHandler {
 
     public void addNewsArticle(NewsArticle newsArticle) {
         news.put(newsArticle, 0);
+        // sendevent
         dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.PUBLISHED, newsArticle));
     }
-
 
     // used to populate news hashmap (for debugging mostly)
     public void addNewsArticleManually(NewsArticle newsArticle) {
         news.put(newsArticle, 0);
+    }
+
+    public void updateNewsArticle(NewsArticle newsArticle) {
+        newsArticle.setTitle("PNL a pierdut");
+        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
     }
 
 }

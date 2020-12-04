@@ -15,7 +15,7 @@ public class Reader implements EventHandler {
     }
 
     // TODO: Implement
-    private void subscribe(NewsArticle newsArticle) {
+    public void subscribe(NewsArticle newsArticle) {
         newsSystem.subscribe(this, newsArticle);
     }
 
@@ -27,8 +27,10 @@ public class Reader implements EventHandler {
     public void handleEvent(Event event) {
         if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
             System.out.println("Reader got notified of event:" + ((NewsEvent)event).getNewsArticle().getTitle());
+            readNewsArticle(((NewsEvent)event).getNewsArticle());
         } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
-            System.out.println("Updated news article");
+            System.out.println("Updated news article" + ((NewsEvent)event).getNewsArticle().getTitle());
+            readNewsArticle(((NewsEvent)event).getNewsArticle());
         }
     }
 

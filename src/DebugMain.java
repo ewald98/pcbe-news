@@ -33,9 +33,12 @@ public class DebugMain {
         reader2.subscribe("Sport");
 
         editor.addNewsArticle(newsArticle1);
+
+        reader1.subscribe(newsArticle1);
         editor.addNewsArticle(newsArticle2);
         editor.addNewsArticle(newsArticle3);
 
+        editor.updateNewsArticle(newsArticle1);
 
 //        reader1.readNewsArticle(newsArticle1);
 //        reader1.readNewsArticle(newsArticle1);
