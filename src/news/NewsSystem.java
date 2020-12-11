@@ -62,7 +62,7 @@ public class NewsSystem implements EventHandler {
 
     public void updateNewsArticle(NewsArticle newsArticle) {
         newsArticle.setTitle("This title has been changed! <" + new Random().nextInt(Integer.MAX_VALUE) + ">");
-        //dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
+        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
     }
 
 }

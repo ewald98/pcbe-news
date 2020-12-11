@@ -52,8 +52,14 @@ public class DebugMain {
         Editor editor1 = new Editor(newsSystem);
         Editor editor2 = new Editor(newsSystem);
 
+        Reader reader1 = new Reader(newsSystem);
+        Reader reader2 = new Reader(newsSystem);
+
         editor1.start();
         editor2.start();
+
+        reader1.start();
+        reader2.start();
     }
 
 }

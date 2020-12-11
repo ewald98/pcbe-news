@@ -16,7 +16,7 @@ public class Editor extends Thread {
 
     public Editor(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
-        isActive = true;
+        this.isActive = true;
     }
 
     public int getNoViews(NewsArticle newsArticle) {
@@ -64,6 +64,7 @@ public class Editor extends Thread {
     }
 
     public void addNewsArticle(NewsArticle newsArticle) {
+        // TODO: CHANGE THIS BACK TO addNewsArticle
         newsSystem.addNewsArticleManually(newsArticle);
     }
 
@@ -78,15 +79,19 @@ public class Editor extends Thread {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(3);
+            int action = randomActionGenerator.nextInt(4);
             switch (action) {
-                case 0: /* add a new random news article */
+                case 0:
+                    /* do nothing */
+                    break;
+
+                case 1: /* add a new random news article */
                     NewsArticle someNewsArticle = generateRandomNewsArticle();
                     System.out.println("##EDITOR_GENERATE:\t\t" + someNewsArticle);
                     addNewsArticle(someNewsArticle);
                     break;
 
-                case 1: /* update a random existing news article */
+                case 2: /* update a random existing news article */
                     if (newsArticleSet.size() > 0) {
                         Random randomArticleGenerator = new Random();
                         int targetArticleIndex, currentArticleIndex;
@@ -104,7 +109,7 @@ public class Editor extends Thread {
                     }
                     break;
 
-                case 2:
+                case 3:
                     if (newsArticleSet.size() > 0) {
                         Random randomArticleGenerator = new Random();
                         int targetArticleIndex, currentArticleIndex;
