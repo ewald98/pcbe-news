@@ -19,10 +19,8 @@ public class Editor extends Thread {
         isActive = true;
     }
 
-    public void getNoViews(NewsArticle newsArticle) {
-        System.out.println(
-                "No of views requested by editor: " +
-                        newsSystem.getNoViews(newsArticle));
+    public int getNoViews(NewsArticle newsArticle) {
+        return newsSystem.getNoViews(newsArticle);
     }
 
     private String generateRandomWord() {
@@ -77,9 +75,10 @@ public class Editor extends Thread {
 
     public void run() {
         while (isActive) {
-            Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(2);
+            Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
+            Random randomActionGenerator = new Random();
+            int action = randomActionGenerator.nextInt(3);
             switch (action) {
                 case 0: /* add a new random news article */
                     NewsArticle someNewsArticle = generateRandomNewsArticle();
@@ -88,8 +87,6 @@ public class Editor extends Thread {
                     break;
 
                 case 1: /* update a random existing news article */
-                    Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
-
                     if (newsArticleSet.size() > 0) {
                         Random randomArticleGenerator = new Random();
                         int targetArticleIndex, currentArticleIndex;
@@ -101,6 +98,24 @@ public class Editor extends Thread {
                             if (currentArticleIndex == targetArticleIndex) {
                                 System.out.println("##EDITOR_UPDATE:\t\t" + newsArticle);
                                 updateNewsArticle(newsArticle);
+                                break;
+                            }
+                        }
+                    }
+                    break;
+
+                case 2:
+                    if (newsArticleSet.size() > 0) {
+                        Random randomArticleGenerator = new Random();
+                        int targetArticleIndex, currentArticleIndex;
+                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size());
+                        currentArticleIndex = 0;
+
+                        for (NewsArticle newsArticle : newsArticleSet) {
+                            currentArticleIndex++;
+                            if (currentArticleIndex == targetArticleIndex) {
+                                System.out.println("##EDITOR_QUERY:\t\t\t" + newsArticle + " has " + getNoViews(newsArticle) + " views");
+                                break;
                             }
                         }
                     }
