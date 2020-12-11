@@ -11,14 +11,14 @@ import java.util.Set;
 
 public class Reader extends Thread implements EventHandler {
 
-    private final boolean isActive;
     NewsSystem newsSystem;
+
     private final int readingDelayLowerBound = 1500; /* milliseconds */
     private final int readingDelayUpperBound = 2500; /* milliseconds */
+    private final boolean isActive = true;
 
     public Reader(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
-        this.isActive = true;
     }
 
     // TODO: Implement

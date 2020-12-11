@@ -6,9 +6,10 @@ import news.NewsSystem;
 import java.util.Random;
 import java.util.Set;
 
+// TODO: implements EventHandler
 public class Editor extends Thread {
 
-    private final boolean isActive;
+    private final boolean isActive = true;
     private final int publishingDelayLowerBound = 1000; /* milliseconds */
     private final int publishingDelayUpperBound = 2000; /* milliseconds */
 
@@ -16,7 +17,6 @@ public class Editor extends Thread {
 
     public Editor(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
-        this.isActive = true;
     }
 
     public int getNoViews(NewsArticle newsArticle) {
