@@ -8,6 +8,7 @@ import news.events.NewsEvent;
 import news.events.NewsFilter;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 public class NewsSystem implements EventHandler {
@@ -27,7 +28,6 @@ public class NewsSystem implements EventHandler {
         return news.keySet();
     }
 
-    // TODO: Implement
     public void subscribe(Reader reader, NewsArticle newsArticle) {
         dispatcher.registerListener(NewsEvent.NewsType.UPDATED, reader, new NewsFilter(newsArticle));
     }
@@ -61,8 +61,8 @@ public class NewsSystem implements EventHandler {
     }
 
     public void updateNewsArticle(NewsArticle newsArticle) {
-        newsArticle.setTitle("PNL a pierdut");
-        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
+        newsArticle.setTitle("This title has been changed! <" + new Random().nextInt(Integer.MAX_VALUE) + ">");
+        //dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
     }
 
 }

@@ -8,7 +8,7 @@ public class DebugMain {
     public static void main(String[] args) {
 
         NewsSystem newsSystem = new NewsSystem();
-
+        /*
         NewsArticle newsArticle1 = new NewsArticle(
                 "Alegeri pe 6 Decembrie",
                 "Ilie Iliescu",
@@ -40,14 +40,20 @@ public class DebugMain {
 
         editor.updateNewsArticle(newsArticle1);
 
-//        reader1.readNewsArticle(newsArticle1);
-//        reader1.readNewsArticle(newsArticle1);
-//        reader1.readNewsArticle(newsArticle2);
-//        reader1.readNewsArticle(newsArticle1);
-//        reader1.readNewsArticle(newsArticle2);
-//        reader2.readNewsArticle(newsArticle1);
-//        reader2.readNewsArticle(newsArticle1);
+        reader1.readNewsArticle(newsArticle1);
+        reader1.readNewsArticle(newsArticle1);
+        reader1.readNewsArticle(newsArticle2);
+        reader1.readNewsArticle(newsArticle1);
+        reader1.readNewsArticle(newsArticle2);
+        reader2.readNewsArticle(newsArticle1);
+        reader2.readNewsArticle(newsArticle1);
+        */
 
+        Editor editor1 = new Editor(newsSystem);
+        Editor editor2 = new Editor(newsSystem);
+
+        editor1.start();
+        editor2.start();
     }
 
 }

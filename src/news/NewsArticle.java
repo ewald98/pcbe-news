@@ -47,4 +47,13 @@ public class NewsArticle {
     public void setSection(String section) {
         this.section = section;
     }
+
+    @Override
+    public String toString() {
+        return "NewsArticle{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", section='" + section + '\'' +
+                '}';
+    }
 }
