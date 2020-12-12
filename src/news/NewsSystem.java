@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 
-public class NewsSystem implements EventHandler {
+public class NewsSystem extends Thread implements EventHandler {
 
     private EventDispatcher dispatcher = new EventDispatcher();
-    private HashMap<NewsArticle, Integer> news= new HashMap<>();
+    private HashMap<NewsArticle, Integer> news = new HashMap<>();
 
     public EventDispatcher getDispatcher() {
         return dispatcher;
@@ -51,8 +51,7 @@ public class NewsSystem implements EventHandler {
 
     public void addNewsArticle(NewsArticle newsArticle) {
         news.put(newsArticle, 0);
-        // sendevent
-        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.PUBLISHED, newsArticle));
+        dispatcher.addEvent(new NewsEvent(NewsEvent.NewsType.PUBLISHED, newsArticle));
     }
 
     // used to populate news hashmap (for debugging mostly)
@@ -62,7 +61,12 @@ public class NewsSystem implements EventHandler {
 
     public void updateNewsArticle(NewsArticle newsArticle) {
         newsArticle.setTitle("This title has been changed! <" + new Random().nextInt(Integer.MAX_VALUE) + ">");
-        dispatcher.dispatch(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
+        dispatcher.addEvent(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
+    }
+
+    public synchronized void run()
+    {
+        dispatcher.start();
     }
 
 }

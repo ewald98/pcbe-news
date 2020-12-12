@@ -59,13 +59,11 @@ public class Editor extends Thread {
     }
 
     private NewsArticle generateRandomNewsArticle() {
-
         return new NewsArticle(generateRandomTitle(), generateRandomAuthor(), generateRandomSection());
     }
 
     public void addNewsArticle(NewsArticle newsArticle) {
-        // TODO: CHANGE THIS BACK TO addNewsArticle
-        newsSystem.addNewsArticleManually(newsArticle);
+        newsSystem.addNewsArticle(newsArticle);
     }
 
     // TODO: updateNewsArticle
@@ -74,12 +72,12 @@ public class Editor extends Thread {
         newsSystem.updateNewsArticle(newsArticle);
     }
 
-    public void run() {
+    public synchronized void run() {
         while (isActive) {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(4);
+            int action = randomActionGenerator.nextInt(3);
             switch (action) {
                 case 0:
                     /* do nothing */
@@ -99,29 +97,12 @@ public class Editor extends Thread {
                         currentArticleIndex = 0;
 
                         for (NewsArticle newsArticle : newsArticleSet) {
-                            currentArticleIndex++;
                             if (currentArticleIndex == targetArticleIndex) {
                                 System.out.println("##EDITOR_UPDATE:\t\t" + newsArticle);
                                 updateNewsArticle(newsArticle);
                                 break;
                             }
-                        }
-                    }
-                    break;
-
-                case 3:
-                    if (newsArticleSet.size() > 0) {
-                        Random randomArticleGenerator = new Random();
-                        int targetArticleIndex, currentArticleIndex;
-                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size());
-                        currentArticleIndex = 0;
-
-                        for (NewsArticle newsArticle : newsArticleSet) {
                             currentArticleIndex++;
-                            if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("##EDITOR_QUERY:\t\t\t" + newsArticle + " has " + getNoViews(newsArticle) + " views");
-                                break;
-                            }
                         }
                     }
                     break;

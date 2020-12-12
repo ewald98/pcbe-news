@@ -13,8 +13,8 @@ public class Reader extends Thread implements EventHandler {
 
     NewsSystem newsSystem;
 
-    private final int readingDelayLowerBound = 1500; /* milliseconds */
-    private final int readingDelayUpperBound = 2500; /* milliseconds */
+    private final int readingDelayLowerBound = 3000; /* milliseconds */
+    private final int readingDelayUpperBound = 6000; /* milliseconds */
     private final boolean isActive = true;
 
     public Reader(NewsSystem newsSystem) {
@@ -31,35 +31,50 @@ public class Reader extends Thread implements EventHandler {
     }
 
     @Override
-    public synchronized void handleEvent(Event event) {
+    public void handleEvent(Event event) {
         if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
-            System.out.println("Reader got notified of event:" + ((NewsEvent)event).getNewsArticle().getTitle());
-            readNewsArticle(((NewsEvent)event).getNewsArticle());
+            System.out.println("Reader got notified of event:" + ((NewsEvent) event).getNewsArticle().getTitle());
+            readNewsArticle(((NewsEvent) event).getNewsArticle());
         } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
-            System.out.println("Updated news article" + ((NewsEvent)event).getNewsArticle().getTitle());
-            readNewsArticle(((NewsEvent)event).getNewsArticle());
+            System.out.println("Updated news article" + ((NewsEvent) event).getNewsArticle().getTitle());
+            readNewsArticle(((NewsEvent) event).getNewsArticle());
         }
     }
 
     public void readNewsArticle(NewsArticle newsArticle) {
-        newsSystem.getDispatcher().dispatch(new NewsEvent(NewsEvent.NewsType.READ, newsArticle));
+        newsSystem.getDispatcher().addEvent(new NewsEvent(NewsEvent.NewsType.READ, newsArticle));
     }
 
-    public synchronized void run()
-    {
-        while(isActive)
-        {
+    public synchronized void run() {
+        while (isActive) {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(2);
-            switch(action)
-            {
+            int action = randomActionGenerator.nextInt(3);
+            switch (action) {
                 case 0:
                     /* do nothing */
                     break;
 
-                case 1: /* read a random existing news article */
+                case 1: /* subscribe to a random news article */
+                    if (newsArticleSet.size() > 0) {
+                        Random randomArticleGenerator = new Random();
+                        int targetArticleIndex, currentArticleIndex;
+                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size() + 1);
+                        currentArticleIndex = 0;
+
+                        for (NewsArticle newsArticle : newsArticleSet) {
+                            if (currentArticleIndex == targetArticleIndex) {
+                                System.out.println("##READER_SUBSCRIBED:\t" + newsArticle);
+                                subscribe(newsArticle);
+                                break;
+                            }
+                            currentArticleIndex++;
+                        }
+                    }
+                    break;
+
+                case 2: /* subscribe to a random news section */
                     if (newsArticleSet.size() > 0) {
                         Random randomArticleGenerator = new Random();
                         int targetArticleIndex, currentArticleIndex;
@@ -67,14 +82,18 @@ public class Reader extends Thread implements EventHandler {
                         currentArticleIndex = 0;
 
                         for (NewsArticle newsArticle : newsArticleSet) {
-                            currentArticleIndex++;
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("##READER_READ:\t\t" + newsArticle);
-                                readNewsArticle(newsArticle);
+                                System.out.println("##READER_SUBSCRIBED:\t" + newsArticle.getSection());
+                                subscribe(newsArticle.getSection());
                                 break;
                             }
+                            currentArticleIndex++;
                         }
                     }
+                    break;
+
+                default:
+                    System.out.println("Whoops, wrong action!");
                     break;
             }
 

@@ -5,43 +5,41 @@ import java.util.HashMap;
 
 import utils.Pair;
 
-public class EventDispatcher {
+public class EventDispatcher extends Thread {
 
     private final HashMap<Event.Type, ArrayList<Pair<EventHandler, EventFilter>>> handlers = new HashMap<>();
     private ArrayList<Event> eventsList = new ArrayList<>();
     private final boolean listening = true;
 
-    public void dispatch(Event event) {
-        for (Pair<EventHandler, EventFilter> pair : handlers.get(event.getType())) {
-            if (pair.getValue().filterEvent(event))
-                pair.getKey().handleEvent(event);
-        }
-    }
-
-    public synchronized void registerListener(Event.Type eventType, EventHandler handler, EventFilter filter) {
+    public void registerListener(Event.Type eventType, EventHandler handler, EventFilter filter) {
         if (!handlers.containsKey(eventType)) {
             handlers.put(eventType, new ArrayList<>());
         }
         handlers.get(eventType).add(new Pair<>(handler, filter));
     }
 
-    public synchronized void registerListener(Event.Type eventType, EventHandler handler) {
+    public void registerListener(Event.Type eventType, EventHandler handler) {
         registerListener(eventType, handler, new EventFilter());
     }
 
-    public synchronized void addEvent(Event newEvent) {
+    public void addEvent(Event newEvent) {
         eventsList.add(newEvent);
     }
 
-    public synchronized void startListening()
-    {
-        while(listening)
-        {
-            while(eventsList.size() > 0)
-            {
+    public synchronized void run() {
+        while (listening) {
+            while (eventsList.size() > 0) {
                 Event currentEvent = eventsList.get(0);
 
-                // TODO: implement event handling
+                try{
+                    for (Pair<EventHandler, EventFilter> pair : handlers.get(currentEvent.getType())) {
+                        if (pair.getValue().filterEvent(currentEvent))
+                            pair.getKey().handleEvent(currentEvent);
+                    }
+                }
+                catch(Exception e){
+
+                }
 
                 eventsList.remove(0);
             }
