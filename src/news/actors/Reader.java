@@ -33,10 +33,10 @@ public class Reader extends Thread implements EventHandler {
     @Override
     public void handleEvent(Event event) {
         if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
-            System.out.println("Reader got notified of event:" + ((NewsEvent) event).getNewsArticle().getTitle());
+            System.out.println("@@  READER_NOTIFIED  @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
             readNewsArticle(((NewsEvent) event).getNewsArticle());
         } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
-            System.out.println("Updated news article" + ((NewsEvent) event).getNewsArticle().getTitle());
+            System.out.println("@@    READER_READ    @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
             readNewsArticle(((NewsEvent) event).getNewsArticle());
         }
     }
@@ -65,7 +65,7 @@ public class Reader extends Thread implements EventHandler {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("##READER_SUBSCRIBED:\t" + newsArticle);
+                                System.out.println("@@ READER_SUBSCRIBED @@:\t" + newsArticle);
                                 subscribe(newsArticle);
                                 break;
                             }
@@ -83,7 +83,7 @@ public class Reader extends Thread implements EventHandler {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("##READER_SUBSCRIBED:\t" + newsArticle.getSection());
+                                System.out.println("@@ READER_SUBSCRIBED @@:\t" + newsArticle.getSection());
                                 subscribe(newsArticle.getSection());
                                 break;
                             }

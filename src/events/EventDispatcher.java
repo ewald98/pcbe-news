@@ -1,14 +1,16 @@
 package events;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import utils.Pair;
 
 public class EventDispatcher extends Thread {
 
     private final HashMap<Event.Type, ArrayList<Pair<EventHandler, EventFilter>>> handlers = new HashMap<>();
-    private ArrayList<Event> eventsList = new ArrayList<>();
+    private List<Event> eventsList = Collections.synchronizedList(new ArrayList<>());
     private final boolean listening = true;
 
     public void registerListener(Event.Type eventType, EventHandler handler, EventFilter filter) {

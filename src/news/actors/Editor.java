@@ -85,7 +85,7 @@ public class Editor extends Thread {
 
                 case 1: /* add a new random news article */
                     NewsArticle someNewsArticle = generateRandomNewsArticle();
-                    System.out.println("##EDITOR_GENERATE:\t\t" + someNewsArticle);
+                    System.out.println("__  EDITOR_GENERATE  __:\t" + someNewsArticle);
                     addNewsArticle(someNewsArticle);
                     break;
 
@@ -98,7 +98,7 @@ public class Editor extends Thread {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("##EDITOR_UPDATE:\t\t" + newsArticle);
+                                System.out.println("__   EDITOR_UPDATE   __:\t" + newsArticle);
                                 updateNewsArticle(newsArticle);
                                 break;
                             }
