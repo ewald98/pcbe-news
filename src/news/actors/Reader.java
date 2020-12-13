@@ -21,7 +21,6 @@ public class Reader extends Thread implements EventHandler {
         this.newsSystem = newsSystem;
     }
 
-    // TODO: Implement
     public void subscribe(NewsArticle newsArticle) {
         newsSystem.subscribe(this, newsArticle);
     }

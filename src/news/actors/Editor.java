@@ -19,6 +19,7 @@ public class Editor extends Thread {
         this.newsSystem = newsSystem;
     }
 
+    // TODO: add READ event handling for Editor
     public int getNoViews(NewsArticle newsArticle) {
         return newsSystem.getNoViews(newsArticle);
     }
@@ -54,6 +55,7 @@ public class Editor extends Thread {
         return generateRandomWord() + " " + generateRandomWord();
     }
 
+    // TODO: generate some-real-world sections, as opposed to completely random strings
     private String generateRandomSection() {
         return generateRandomWord();
     }
@@ -66,8 +68,8 @@ public class Editor extends Thread {
         newsSystem.addNewsArticle(newsArticle);
     }
 
-    // TODO: updateNewsArticle
-    // TODO 2: should update some of the overall logic: if a reader is subscribed to a certain section and an article in that section is modified (but reader is not directly subscribed to that article), should he be notified?
+    // TODO: should update some of the overall logic: if a reader is subscribed to a certain section and an article in
+    //  that section is modified (but reader is not directly subscribed to that article), should he be notified?
     public void updateNewsArticle(NewsArticle newsArticle) {
         newsSystem.updateNewsArticle(newsArticle);
     }
