@@ -4,7 +4,6 @@ import news.NewsArticle;
 import news.NewsSystem;
 import utils.ArticleGenerator;
 
-import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.Set;
 

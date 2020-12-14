@@ -1,7 +1,6 @@
 package news;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 public class NewsArticle {
 
