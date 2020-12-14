@@ -2,11 +2,12 @@ package news.actors;
 
 import news.NewsArticle;
 import news.NewsSystem;
+import utils.ArticleGenerator;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.Set;
 
-// TODO: implements EventHandler
 public class Editor extends Thread {
 
     private final boolean isActive = true;
@@ -19,57 +20,14 @@ public class Editor extends Thread {
         this.newsSystem = newsSystem;
     }
 
-    // TODO: add READ event handling for Editor
     public int getNoViews(NewsArticle newsArticle) {
         return newsSystem.getNoViews(newsArticle);
-    }
-
-    private String generateRandomWord() {
-        Random rng = new Random();
-        int wordLength = rng.nextInt(10 - 3 + 1) + 3;
-
-        char[] letters = new char[wordLength];
-        for (int index = 0; index < wordLength; index++) {
-            letters[index] = (char) (rng.nextInt('z' - 'a' + 1) + 'a');
-        }
-
-        return new String(letters);
-    }
-
-    private String generateRandomTitle() {
-        Random rng = new Random();
-        int titleLength = rng.nextInt(6) + 1;
-
-        String title = "";
-        for (int index = 0; index < titleLength; index++) {
-            title = title.concat(generateRandomWord());
-            if (index != titleLength - 1) {
-                title = title.concat(" ");
-            }
-        }
-
-        return title;
-    }
-
-    private String generateRandomAuthor() {
-        return generateRandomWord() + " " + generateRandomWord();
-    }
-
-    // TODO: generate some-real-world sections, as opposed to completely random strings
-    private String generateRandomSection() {
-        return generateRandomWord();
-    }
-
-    private NewsArticle generateRandomNewsArticle() {
-        return new NewsArticle(generateRandomTitle(), generateRandomAuthor(), generateRandomSection());
     }
 
     public void addNewsArticle(NewsArticle newsArticle) {
         newsSystem.addNewsArticle(newsArticle);
     }
 
-    // TODO: should update some of the overall logic: if a reader is subscribed to a certain section and an article in
-    //  that section is modified (but reader is not directly subscribed to that article), should he be notified?
     public void updateNewsArticle(NewsArticle newsArticle) {
         newsSystem.updateNewsArticle(newsArticle);
     }
@@ -79,16 +37,16 @@ public class Editor extends Thread {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(3);
+            int action = randomActionGenerator.nextInt(4);
             switch (action) {
                 case 0:
                     /* do nothing */
                     break;
 
                 case 1: /* add a new random news article */
-                    NewsArticle someNewsArticle = generateRandomNewsArticle();
-                    System.out.println("__  EDITOR_GENERATE  __:\t" + someNewsArticle);
+                    NewsArticle someNewsArticle = ArticleGenerator.generateRandomNewsArticle();
                     addNewsArticle(someNewsArticle);
+                    System.out.println("__  EDITOR_GENERATE  __:\t" + someNewsArticle);
                     break;
 
                 case 2: /* update a random existing news article */
@@ -100,8 +58,25 @@ public class Editor extends Thread {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("__   EDITOR_UPDATE   __:\t" + newsArticle);
                                 updateNewsArticle(newsArticle);
+                                System.out.println("__   EDITOR_UPDATE   __:\t" + newsArticle);
+                                break;
+                            }
+                            currentArticleIndex++;
+                        }
+                    }
+                    break;
+
+                case 3: /* get the number of views for a random article */
+                    if (newsArticleSet.size() > 0) {
+                        Random randomArticleGenerator = new Random();
+                        int targetArticleIndex, currentArticleIndex;
+                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size());
+                        currentArticleIndex = 0;
+
+                        for (NewsArticle newsArticle : newsArticleSet) {
+                            if (currentArticleIndex == targetArticleIndex) {
+                                System.out.println("__   EDITOR_QUERY    __:\t" + newsArticle + " has " + getNoViews(newsArticle) + " views");
                                 break;
                             }
                             currentArticleIndex++;

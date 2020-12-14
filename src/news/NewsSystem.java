@@ -7,6 +7,7 @@ import news.actors.Reader;
 import news.events.NewsEvent;
 import news.events.NewsFilter;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
@@ -34,6 +35,11 @@ public class NewsSystem extends Thread implements EventHandler {
 
     public void subscribe(Reader reader, String section) {
         dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(section));
+    }
+
+    public void subscribe(Reader reader, LocalDateTime publishDate)
+    {
+        dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(publishDate));
     }
 
     public int getNoViews(NewsArticle newsArticle) {

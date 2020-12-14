@@ -5,7 +5,9 @@ import events.EventHandler;
 import news.NewsArticle;
 import news.NewsSystem;
 import news.events.NewsEvent;
+import utils.ArticleGenerator;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ public class Reader extends Thread implements EventHandler {
     private final int readingDelayLowerBound = 3000; /* milliseconds */
     private final int readingDelayUpperBound = 6000; /* milliseconds */
     private final boolean isActive = true;
+    private final String name = ArticleGenerator.generateRandomWord(5);
 
     public Reader(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
@@ -29,14 +32,18 @@ public class Reader extends Thread implements EventHandler {
         newsSystem.subscribe(this, section);
     }
 
+    public void subscribe(LocalDateTime publishDate) {
+        newsSystem.subscribe(this, publishDate);
+    }
+
     @Override
     public void handleEvent(Event event) {
         if (event.getType() == NewsEvent.NewsType.PUBLISHED) {
-            System.out.println("@@  READER_NOTIFIED  @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
             readNewsArticle(((NewsEvent) event).getNewsArticle());
+            System.out.println("@@  R" + name + "_NOTIFIED  @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
         } else if (event.getType() == NewsEvent.NewsType.UPDATED) {
-            System.out.println("@@    READER_READ    @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
             readNewsArticle(((NewsEvent) event).getNewsArticle());
+            System.out.println("@@    R" + name + "_READ    @@:\t" + ((NewsEvent) event).getNewsArticle().getTitle());
         }
     }
 
@@ -49,7 +56,7 @@ public class Reader extends Thread implements EventHandler {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(3);
+            int action = randomActionGenerator.nextInt(4);
             switch (action) {
                 case 0:
                     /* do nothing */
@@ -64,7 +71,7 @@ public class Reader extends Thread implements EventHandler {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("@@ READER_SUBSCRIBED @@:\t" + newsArticle);
+                                System.out.println("@@ R" + name + "_SUBSCRIBED @@:\t" + newsArticle);
                                 subscribe(newsArticle);
                                 break;
                             }
@@ -82,8 +89,26 @@ public class Reader extends Thread implements EventHandler {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("@@ READER_SUBSCRIBED @@:\t" + newsArticle.getSection());
+                                System.out.println("@@ R" + name + "_SUBSCRIBED @@:\t" + newsArticle.getSection());
                                 subscribe(newsArticle.getSection());
+                                break;
+                            }
+                            currentArticleIndex++;
+                        }
+                    }
+                    break;
+
+                case 3: /* subscribe to a random publish date */
+                    if (newsArticleSet.size() > 0) {
+                        Random randomArticleGenerator = new Random();
+                        int targetArticleIndex, currentArticleIndex;
+                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size());
+                        currentArticleIndex = 0;
+
+                        for (NewsArticle newsArticle : newsArticleSet) {
+                            if (currentArticleIndex == targetArticleIndex) {
+                                System.out.println("@@ R" + name + "_SUBSCRIBED @@:\t" + newsArticle.getPublishDate());
+                                subscribe(newsArticle.getPublishDate());
                                 break;
                             }
                             currentArticleIndex++;
