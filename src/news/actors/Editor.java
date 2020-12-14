@@ -13,6 +13,7 @@ public class Editor extends Thread {
     private final boolean isActive = true;
     private final int publishingDelayLowerBound = 1000; /* milliseconds */
     private final int publishingDelayUpperBound = 2000; /* milliseconds */
+    private final String name = ArticleGenerator.generateRandomWord(5);
 
     NewsSystem newsSystem;
 
@@ -46,7 +47,7 @@ public class Editor extends Thread {
                 case 1: /* add a new random news article */
                     NewsArticle someNewsArticle = ArticleGenerator.generateRandomNewsArticle();
                     addNewsArticle(someNewsArticle);
-                    System.out.println("__  EDITOR_GENERATE  __:\t" + someNewsArticle);
+                    System.out.println("__  E" + name + "_GENERATE  __:\t" + someNewsArticle);
                     break;
 
                 case 2: /* update a random existing news article */
@@ -59,7 +60,7 @@ public class Editor extends Thread {
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
                                 updateNewsArticle(newsArticle);
-                                System.out.println("__   EDITOR_UPDATE   __:\t" + newsArticle);
+                                System.out.println("__   E" + name + "_UPDATE   __:\t" + newsArticle);
                                 break;
                             }
                             currentArticleIndex++;
@@ -76,7 +77,7 @@ public class Editor extends Thread {
 
                         for (NewsArticle newsArticle : newsArticleSet) {
                             if (currentArticleIndex == targetArticleIndex) {
-                                System.out.println("__   EDITOR_QUERY    __:\t" + newsArticle + " has " + getNoViews(newsArticle) + " views");
+                                System.out.println("__   E" + name + "_QUERY    __:\t" + newsArticle + " has " + getNoViews(newsArticle) + " views");
                                 break;
                             }
                             currentArticleIndex++;

@@ -15,7 +15,10 @@ public class NewsFilter extends EventFilter {
     public NewsFilter(String section) {
         this.section = section;
     }
-    public NewsFilter(LocalDateTime publishDate){this.publishDate = publishDate;}
+
+    public NewsFilter(LocalDateTime publishDate) {
+        this.publishDate = publishDate;
+    }
 
     public NewsFilter(NewsArticle newsArticle) {
         this.newsArticle = newsArticle;
@@ -23,13 +26,16 @@ public class NewsFilter extends EventFilter {
 
     @Override
     public boolean filterEvent(Event event) {
-        NewsArticle eventNewsArticle = ((NewsEvent)event).getNewsArticle();
+        NewsArticle eventNewsArticle = ((NewsEvent) event).getNewsArticle();
 
+        /* filter by an actual news article */
         if (newsArticle != null && !(newsArticle == eventNewsArticle))
             return false;
+        /* filter by section */
         if (section != null && !section.equals(eventNewsArticle.getSection()))
             return false;
-        if(publishDate != null && !publishDate.isEqual(eventNewsArticle.getPublishDate()))
+        /* filter by publish date, plus or minus one day */
+        if (publishDate != null && !(publishDate.isAfter(eventNewsArticle.getPublishDate().minusDays(1)) && publishDate.isBefore(eventNewsArticle.getPublishDate().plusDays(1))))
             return false;
 
         return true;
