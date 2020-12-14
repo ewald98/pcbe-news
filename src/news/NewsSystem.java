@@ -37,6 +37,11 @@ public class NewsSystem extends Thread implements EventHandler {
         dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(section));
     }
 
+    public void subscribe(String author, Reader reader)
+    {
+        dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(author));
+    }
+
     public void subscribe(Reader reader, LocalDateTime publishDate)
     {
         dispatcher.registerListener(NewsEvent.NewsType.PUBLISHED, reader, new NewsFilter(publishDate));

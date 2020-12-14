@@ -32,6 +32,11 @@ public class Reader extends Thread implements EventHandler {
         newsSystem.subscribe(this, section);
     }
 
+    /* dummy variable because I can't overload the above method */
+    public void subscribe(String author, Object dummy) {
+        newsSystem.subscribe(author, this);
+    }
+
     public void subscribe(LocalDateTime publishDate) {
         newsSystem.subscribe(this, publishDate);
     }
@@ -56,7 +61,7 @@ public class Reader extends Thread implements EventHandler {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
             Random randomActionGenerator = new Random();
-            int action = randomActionGenerator.nextInt(4);
+            int action = randomActionGenerator.nextInt(5);
             switch (action) {
                 case 0:
                     /* do nothing */
@@ -98,7 +103,25 @@ public class Reader extends Thread implements EventHandler {
                     }
                     break;
 
-                case 3: /* subscribe to a random publish date */
+                case 3: /* subscribe to a random author */
+                    if (newsArticleSet.size() > 0) {
+                        Random randomArticleGenerator = new Random();
+                        int targetArticleIndex, currentArticleIndex;
+                        targetArticleIndex = randomArticleGenerator.nextInt(newsArticleSet.size());
+                        currentArticleIndex = 0;
+
+                        for (NewsArticle newsArticle : newsArticleSet) {
+                            if (currentArticleIndex == targetArticleIndex) {
+                                System.out.println("@@ R" + name + "_SUBSCRIBED @@:\t" + newsArticle.getAuthor());
+                                subscribe(newsArticle.getAuthor(), null);
+                                break;
+                            }
+                            currentArticleIndex++;
+                        }
+                    }
+                    break;
+
+                case 4: /* subscribe to a random publish date */
                     if (newsArticleSet.size() > 0) {
                         Random randomArticleGenerator = new Random();
                         int targetArticleIndex, currentArticleIndex;
