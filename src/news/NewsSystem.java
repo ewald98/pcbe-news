@@ -23,6 +23,7 @@ public class NewsSystem extends Thread implements EventHandler {
 
     public NewsSystem() {
         dispatcher.registerListener(NewsEvent.NewsType.READ, this);
+        start();
     }
 
     public Set<NewsArticle> getAllNews() {
@@ -52,7 +53,7 @@ public class NewsSystem extends Thread implements EventHandler {
     }
 
     @Override
-    public void handleEvent(Event event) {
+    public synchronized void handleEvent(Event event) {
         // eventType will be: READ
         NewsArticle readArticle = ((NewsEvent) event).getNewsArticle();
 
@@ -60,7 +61,7 @@ public class NewsSystem extends Thread implements EventHandler {
         news.put(readArticle, count + 1);
     }
 
-    public void addNewsArticle(NewsArticle newsArticle) {
+    public synchronized void addNewsArticle(NewsArticle newsArticle) {
         news.put(newsArticle, 0);
         dispatcher.addEvent(new NewsEvent(NewsEvent.NewsType.PUBLISHED, newsArticle));
     }
@@ -70,12 +71,12 @@ public class NewsSystem extends Thread implements EventHandler {
         news.put(newsArticle, 0);
     }
 
-    public void updateNewsArticle(NewsArticle newsArticle) {
+    public synchronized void updateNewsArticle(NewsArticle newsArticle) {
         newsArticle.setTitle("This title has been changed! <" + new Random().nextInt(Integer.MAX_VALUE) + ">");
         dispatcher.addEvent(new NewsEvent(NewsEvent.NewsType.UPDATED, newsArticle));
     }
 
-    public synchronized void run()
+    public void run()
     {
         dispatcher.start();
     }

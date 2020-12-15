@@ -22,6 +22,7 @@ public class Reader extends Thread implements EventHandler {
 
     public Reader(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
+        start();
     }
 
     public void subscribe(NewsArticle newsArticle) {
@@ -56,7 +57,7 @@ public class Reader extends Thread implements EventHandler {
         newsSystem.getDispatcher().addEvent(new NewsEvent(NewsEvent.NewsType.READ, newsArticle));
     }
 
-    public synchronized void run() {
+    public void run() {
         while (isActive) {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 

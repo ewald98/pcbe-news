@@ -13,22 +13,22 @@ public class EventDispatcher extends Thread {
     private List<Event> eventsList = Collections.synchronizedList(new ArrayList<>());
     private final boolean listening = true;
 
-    public void registerListener(Event.Type eventType, EventHandler handler, EventFilter filter) {
+    public synchronized void registerListener(Event.Type eventType, EventHandler handler, EventFilter filter) {
         if (!handlers.containsKey(eventType)) {
             handlers.put(eventType, new ArrayList<>());
         }
         handlers.get(eventType).add(new Pair<>(handler, filter));
     }
 
-    public void registerListener(Event.Type eventType, EventHandler handler) {
+    public synchronized void registerListener(Event.Type eventType, EventHandler handler) {
         registerListener(eventType, handler, new EventFilter());
     }
 
-    public void addEvent(Event newEvent) {
+    public synchronized void addEvent(Event newEvent) {
         eventsList.add(newEvent);
     }
 
-    public synchronized void run() {
+    public void run() {
         while (listening) {
             while (eventsList.size() > 0) {
                 Event currentEvent = eventsList.get(0);

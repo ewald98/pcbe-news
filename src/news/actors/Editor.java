@@ -18,6 +18,7 @@ public class Editor extends Thread {
 
     public Editor(NewsSystem newsSystem) {
         this.newsSystem = newsSystem;
+        start();
     }
 
     public int getNoViews(NewsArticle newsArticle) {
@@ -32,7 +33,7 @@ public class Editor extends Thread {
         newsSystem.updateNewsArticle(newsArticle);
     }
 
-    public synchronized void run() {
+    public void run() {
         while (isActive) {
             Set<NewsArticle> newsArticleSet = newsSystem.getAllNews();
 
